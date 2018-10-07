@@ -1,5 +1,6 @@
 package com.roydenrego.imageshare;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -28,12 +29,18 @@ public class MainActivity extends AppCompatActivity {
 
         if(data != null && data.getExtras() != null) {
 
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setTitle("Progress");
+            dialog.setMessage("Downloading Image....");
+            dialog.show();
+
             String url = data.getExtras().getString("android.intent.extra.TEXT");
-            Log.i("test", data.getExtras().getString("android.intent.extra.SUBJECT"));
 
             Picasso.get().load(url).into(new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    dialog.hide();
+
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.setType("image/*");
 
