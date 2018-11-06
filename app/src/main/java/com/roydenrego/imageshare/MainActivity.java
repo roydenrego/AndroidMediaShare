@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
                     i.putExtra(Intent.EXTRA_STREAM, photoURI);
                     i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(Intent.createChooser(i, "Share Image"));
+
+                    finish();
                 }
 
                 @Override
