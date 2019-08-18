@@ -1,4 +1,4 @@
-package com.roydenrego.imageshare;
+package com.roydenrego.mediashare;
 
 import android.support.v4.content.FileProvider;
 

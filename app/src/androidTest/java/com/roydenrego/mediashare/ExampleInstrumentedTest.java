@@ -1,4 +1,4 @@
-package com.roydenrego.imageshare;
+package com.roydenrego.mediashare;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

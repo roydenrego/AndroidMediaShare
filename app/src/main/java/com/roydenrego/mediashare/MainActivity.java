@@ -1,10 +1,9 @@
-package com.roydenrego.imageshare;
+package com.roydenrego.mediashare;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -23,9 +22,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.roydenrego.mediashare.Const.*;
+
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "media_share";
 
     private ProgressDialog mProgressDialog;
 
@@ -44,14 +44,15 @@ public class MainActivity extends AppCompatActivity {
             mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             mProgressDialog.setCancelable(true);
 
-            // execute this when the downloader must be fired
+            //Start the download task
             final DownloadTask downloadTask = new DownloadTask(MainActivity.this);
             downloadTask.execute(data.getExtras().getString("android.intent.extra.TEXT"));
 
-            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
+            mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
+                    //Stop the task if the dialog was cancelled
                     downloadTask.cancel(true); //cancel the task
                 }
             });
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(Intent.ACTION_SEND).setType("image/*");
 
 
-                Uri photoURI = FileProvider.getUriForFile(MainActivity.this, getApplicationContext().getPackageName() + ".com.roydenrego.imageshare.provider", saveFile);
+                Uri photoURI = FileProvider.getUriForFile(MainActivity.this, getApplicationContext().getPackageName() + "." + PACKAGE_NAME + ".provider", saveFile);
 
                 i.putExtra(Intent.EXTRA_STREAM, photoURI);
                 i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

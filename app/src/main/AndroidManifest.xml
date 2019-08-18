@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.roydenrego.imageshare">
+    package="com.roydenrego.mediashare">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.roydenrego.mediashare.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,8 +29,8 @@
         </activity>
 
         <provider
-            android:name=".GenericFileProvider"
-            android:authorities="${applicationId}.com.roydenrego.imageshare.provider"
+            android:name="com.roydenrego.mediashare.GenericFileProvider"
+            android:authorities="${applicationId}.com.roydenrego.mediashare.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
