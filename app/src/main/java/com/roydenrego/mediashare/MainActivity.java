@@ -1,5 +1,6 @@
 package com.roydenrego.mediashare;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
+import android.widget.GridView;
 import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import static com.roydenrego.mediashare.Const.*;
 
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent data = getIntent();
 
-        if(data != null && data.getExtras() != null) {
+        if (data != null && data.getExtras() != null) {
             // Initialize and show progress dialog if the app was opened via an url intent
             mProgressDialog = new ProgressDialog(MainActivity.this);
             mProgressDialog.setMessage("Downloading Media");
@@ -56,6 +60,23 @@ public class MainActivity extends AppCompatActivity {
                     downloadTask.cancel(true); //cancel the task
                 }
             });
+        }
+
+        GridView gridView = findViewById(R.id.gridView);
+
+        File directory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        if (directory != null) {
+            File[] files = directory.listFiles();
+            Log.d(TAG, "Size: " + files.length);
+
+            ArrayList<Uri> images = new ArrayList<>();
+            for (File file : files) {
+                images.add(FileProvider.getUriForFile(MainActivity.this, getApplicationContext().getPackageName() + "." + PACKAGE_NAME + ".provider", file));
+            }
+
+            PhotoAdapter adapter = new PhotoAdapter(MainActivity.this, images);
+            gridView.setAdapter(adapter);
         }
     }
 
@@ -140,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     getClass().getName());
-            mWakeLock.acquire(10*60*1000L /*10 minutes*/);
+            mWakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
             mProgressDialog.show();
         }
 
@@ -169,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivity(Intent.createChooser(i, "Share Image"));
 
-                finish();
+                ((Activity) context).finish();
             }
         }
 
